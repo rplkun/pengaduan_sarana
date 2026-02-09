@@ -5,23 +5,23 @@
 
   $filter_kat = $_GET['kategori']??"";
   $filter_st = $_GET['status']??"";
-  $sort_by = $_GET['sort']??'id_pelaporan';
+  $sort_by = $_GET['sort']??'id_laporan';
   $order = $_GET['order']??'DESC';
   $next_order = ($order == 'ASC') ? 'DESC' : 'ASC';
 
-  $sql = "SELECT i.*, k.ket_kategori, a.status FROM input_aspirasi i JOIN kategori k ON i.id_kategori = k.id_kategori LEFT JOIN aspirasi a ON i.id_pelaporan = a.id_aspirasi";
+  $sql = "SELECT i.*, k.ket_kategori, a.status FROM input_aspirasi i JOIN kategori k ON i.id_kategori = k.id_kategori LEFT JOIN aspirasi a ON i.id_laporan = a.id_aspirasi";
 
   $cond = [];
   if($filter_kat) $cond[] = "i.id_kategori = '$filter_kat'";
   if($filter_st) $cond[] = ($filter_st == 'menunggu' ? "(a.status = 'menunggu' OR a.status IS NULL)" : "a.status='$filter_st'");
 
-  if($cond) $sql .= "WHERE".implode("AND", $cond);
+  if($cond) $sql .= " WHERE ".implode(" AND ", $cond);
 
  $sql .= " ORDER BY $sort_by $order";
- $res = mysqli_query($conn, $sql);
+ $res = mysqli_query($conn,$sql);
 
   function sortUrl($col, $ord) {
-    $p = $_GET; $p['sort'] = $col; $p['order'] = $ord;
+    $p = $_GET;$p['sort'] = $col; $p['order']=$ord;
     return "?" .http_build_query($p);
   }
 ?>
@@ -66,7 +66,7 @@
  <table class="table table-hover bg-white shadow-sm align-middle">
    <thead class="table-dark">
     <tr>
-     <th class="text-center"><a href="<?=sortUrl('id_pelaporan',$next_order) ?>" class = "text-white text-decoration-none">ID</a></th>
+     <th class="text-center"><a href="<?=sortUrl('id_laporan',$next_order) ?>" class = "text-white text-decoration-none">ID</a></th>
      <th><a href="<?= sortUrl('nis',$next_order) ?>" class = "text-white text-decoration-none">NIS</a></th>
      <th>Kategori</th>
      <th>Laporan</th>
@@ -80,12 +80,12 @@
       $bg = ($st == 'selesai' ? 'success' : ($st == 'proses' ? 'warning text-dark' : 'secondary'));
     ?>
  <tr>
-    <td class="text-center">#<?= $row['id_pelaporan'] ?></td>
+    <td class="text-center">#<?= $row['id_laporan'] ?></td>
     <td><?= $row['nis'] ?></td>
     <td><?= $row['ket_kategori'] ?></td>
-    <td><?= $row['keterangan'] ?></td>
+    <td><?= $row['ket'] ?></td>
     <td class="text-center"><span class="badge bg-<?= $bg ?>"><?= $st ?></span></td>
-    <td class="text-center"><a href="update_status.php?id=<?= $row['id_pelaporan'] ?>" class="btn btn-sm btn-primary px-3">Tanggapi</a></td>
+    <td class="text-center"><a href="update_status.php?id=<?= $row['id_laporan'] ?>" class="btn btn-sm btn-primary px-3">Tanggapi</a></td>
     </tr>
     <?php } ?>
   </tbody>

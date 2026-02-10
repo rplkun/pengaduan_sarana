@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../koneksi.php';  // Pastikan ini aman
+include '../koneksi.php';
 if (!isset($_SESSION['nis'])) {
     header("location: login_siswa.php");
     exit;
@@ -8,36 +8,13 @@ if (!isset($_SESSION['nis'])) {
 $nis = $_SESSION['nis'];
 
 if (isset($_POST['sub'])) {
-    if (!empty($_POST['kat']) && !empty($_POST['lok']) && !empty($_POST['ket'])) {
-        $kat = $_POST['kat'];
-        $lok = $_POST['lok'];
-        $ket = $_POST['ket'];
-        $status = 'Menunggu';
-        $feedback = '';
-        
-        $sql = "INSERT INTO aspirasi (id_kategori, feedback, status)
-        VALUES (?, ?, ?)";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iis", $id_kategori, $feedback, $status);
-    $stmt->execute();
-
-        
-        $stmt2 = $conn->prepare("INSERT INTO aspirasi (status,id_kategori, feedback) VALUES (?, ?, ?)");
-        $stmt2->bind_param("iss", $status, $kat, $feedback);
-        $insert2 = $stmt2->
-        execute();
-        
-        if ($insert1 && $insert2) {
-            echo "<script>alert('Laporan terkirim!'); window.location='history.php';</script>";
-        } else {
-            echo "<script>alert('Gagal mengirim laporan! Error: " . $conn->error . "');</script>";
-        }
-        $stmt1->close();
-        $stmt2->close();
-    } else {
-        echo "<script>alert('Semua field harus diisi!');</script>";
-    }
+    $id = rand(1000, 9999);
+    $kat = $_POST['kat'];
+    $_POST ['lok'];
+    $ket= $_POST ['ket'];
+    mysqli_query($conn, "INSERT INTO input_aspirasi VALUES ('$id', '$nis', '$kat', '$lokasi', '$ket')");
+    mysqli_query($conn, "INSERT INTO aspirasi(id_aspirasi, status, id_kategori, feedback) VALUES('$id', 'menunggu', '$kat', 0)");
+    echo "<script>alert('laporan terkirim!');window.location='history.php';</script>";
 }
 ?>
 
@@ -57,12 +34,12 @@ if (isset($_POST['sub'])) {
             <h5>Buat Pengaduan</h5><hr>
             <form method="POST">  
                 <label>Kategori</label>
-                <select name="kat" class="form-select mb-3" required>  
-                    <option value="">Pilih Kategori</option>
+                <select name="kat" class="form-select mb-3" required>
+                    <option value="" disabled>Pilih Kategori</option>
                     <?php 
-                    $k = mysqli_query($conn, "SELECT * FROM kategori");  
+                    $k = mysqli_query($conn, "SELECT * FROM kategori");
                     while ($rk = mysqli_fetch_assoc($k)) {
-                        echo "<option value='" . $rk['id_kategori'] . "'>" . $rk['ket_kategori'] . "</option>";  
+                        echo "<option value='" . $rk['id_kategori'] . "'>" . $rk['ket_kategori'] . "</option>";
                     }
                     ?>
                 </select>

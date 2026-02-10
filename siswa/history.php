@@ -2,8 +2,9 @@
 session_start();
 include'../koneksi.php';
 if(!isset($_SESSION['nis'])){header("location:login_siswa.php");exit;}
-$nis=$_SESSION['nis'];
-$q=mysqli_query($conn,"SELECT i.*,k.ket_kategori,a.status,a.feedback FROM input_aspirasi i JOIN kategori k ON i.id_kategori=k.id_kategori LEFT JOIN aspirasi a JOIN aspirasi a ON i.id_pelaporan=a.id_aspirasi WHERE i.nis='$nis'ORDER BY i.id_pelaporan DESC");
+$nis = $_SESSION['nis'];
+
+$q = mysqli_query($conn,"SELECT i.*,k.ket_kategori,a.status,a.feedback FROM input_aspirasi i JOIN kategori k ON i.id_kategori=k.id_kategori LEFT JOIN aspirasi a ON i.id_pelaporan=a.id_aspirasi WHERE i.nis='$nis'ORDER BY i.id_pelaporan DESC");
 
 ?>
 

@@ -6,7 +6,7 @@ if(isset($_POST['login'])){
   $q=mysqli_query($conn,"SELECT * FROM siswa WHERE nis='$nis'");
   if(mysqli_num_rows($q)>0){
     $_SESSION['nis']=$nis;
-    header("location:from_aspitasi.php");
+    header("location:form_aspirasi.php");
   }else{$err="NIS tidak terdaftar di sistem!";}
   }
 ?>
@@ -21,10 +21,10 @@ if(isset($_POST['login'])){
  <div class="card mx-auto p-4 shadow" style="width:350px;">
   <h4 class="text-center">LOGIN SISWA</h4><hr>
   <?php if(isset($err)) echo"<div class='alert alert-danger small'>$err</div>";?>
-  <from method="POST">
+  <form method="POST">
     <input type="text" name="nis" class="from-control mb-3" placeholder="Masukan NIS"required>
     <button type="submit" name="login" class="btn btn-primary w-100">Masuk</button>
-   </from>
+   </form>
  </div>
 </body>
 </html>

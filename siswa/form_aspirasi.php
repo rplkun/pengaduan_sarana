@@ -12,16 +12,16 @@ if (isset($_POST['sub'])) {
     $kat = $_POST['kat'];
     $_POST ['lok'];
     $ket= $_POST ['ket'];
-    mysqli_query($conn, "INSERT INTO input_aspirasi VALUES ('$id', '$nis', '$kat', '$lokasi', '$ket')");
+    mysqli_query($conn, "INSERT INTO input_aspirasi VALUES ('$id', '$nis', '$kat', '$lok', '$ket')");
     mysqli_query($conn, "INSERT INTO aspirasi(id_aspirasi, status, id_kategori, feedback) VALUES('$id', 'menunggu', '$kat', 0)");
-    echo "<script>alert('laporan terkirim!');window.location='history.php';</script>";
+    echo "<script>alert('laporan terkirim!'); window.location='history.php';</script>";
 }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>From Aspirasi</title>
+    <title>Form Aspirasi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
 </head>
 <body class="bg-light">
